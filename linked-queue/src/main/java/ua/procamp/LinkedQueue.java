@@ -9,13 +9,24 @@ package ua.procamp;
  */
 public class LinkedQueue<T> implements Queue<T> {
 
+
+    private Node<T> head;
+    private Node<T> tail;
+    private int size;
+
     /**
      * Adds an element to the end of the queue.
      *
      * @param element the element to add
      */
     public void add(T element) {
-        throw new UnsupportedOperationException("This method is not implemented yet"); // todo: implement this method
+        if(isEmpty()) {
+            head = tail = new Node<>(element);
+        }else{
+            tail.next = new Node<>(element);
+            tail = tail.next;
+        }
+        size++;
     }
 
     /**
@@ -24,7 +35,13 @@ public class LinkedQueue<T> implements Queue<T> {
      * @return an element that was retrieved from the head or null if queue is empty
      */
     public T poll() {
-        throw new UnsupportedOperationException("This method is not implemented yet"); // todo: implement this method
+        if (isEmpty()){
+            return null;
+        }
+        T item = head.item;
+        head = head.next;
+        size--;
+        return item;
     }
 
     /**
@@ -33,7 +50,7 @@ public class LinkedQueue<T> implements Queue<T> {
      * @return an integer value that is a size of queue
      */
     public int size() {
-        throw new UnsupportedOperationException("This method is not implemented yet"); // todo: implement this method
+        return size;
     }
 
     /**
@@ -42,6 +59,20 @@ public class LinkedQueue<T> implements Queue<T> {
      * @return {@code true} if the queue is empty, returns {@code false} if it's not
      */
     public boolean isEmpty() {
-        throw new UnsupportedOperationException("This method is not implemented yet"); // todo: implement this method
+        return size == 0;
+    }
+
+    private static class Node<E> {
+        E item;
+        Node<E> next;
+
+        Node(E element, Node<E> next) {
+            this(element);
+            this.next = next;
+        }
+
+        Node(E element){
+            this.item = element;
+        }
     }
 }
