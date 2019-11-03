@@ -9,13 +9,27 @@ package ua.procamp;
  */
 public class LinkedQueue<T> implements Queue<T> {
 
+    private int size;
+    private Node<T> first;
+    private Node<T> last;
+
     /**
      * Adds an element to the end of the queue.
      *
      * @param element the element to add
      */
     public void add(T element) {
-        throw new UnsupportedOperationException("This method is not implemented yet"); // todo: implement this method
+        Node<T> node = Node.get(element);
+
+        if(first==null){
+            first = last = node ;
+        }
+        else {
+            last.next = node;
+            last = node;
+        }
+
+        size++;
     }
 
     /**
@@ -24,7 +38,17 @@ public class LinkedQueue<T> implements Queue<T> {
      * @return an element that was retrieved from the head or null if queue is empty
      */
     public T poll() {
-        throw new UnsupportedOperationException("This method is not implemented yet"); // todo: implement this method
+        if(isEmpty()) {
+            return null;
+        }
+
+        T element = first.element;
+        first = first.next;
+        if(first == null){
+            last = null;
+        }
+        size--;
+        return element;
     }
 
     /**
@@ -33,7 +57,7 @@ public class LinkedQueue<T> implements Queue<T> {
      * @return an integer value that is a size of queue
      */
     public int size() {
-        throw new UnsupportedOperationException("This method is not implemented yet"); // todo: implement this method
+        return size;
     }
 
     /**
@@ -42,6 +66,19 @@ public class LinkedQueue<T> implements Queue<T> {
      * @return {@code true} if the queue is empty, returns {@code false} if it's not
      */
     public boolean isEmpty() {
-        throw new UnsupportedOperationException("This method is not implemented yet"); // todo: implement this method
+        return first == null;
+    }
+
+    private static class Node<T>{
+        T element;
+        Node<T> next;
+
+        Node(T element) {
+            this.element = element;
+        }
+
+        static <T> Node<T> get(T element){
+            return new Node<>(element);
+        }
     }
 }
