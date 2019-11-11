@@ -1,8 +1,15 @@
 package ua.procamp;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -11,6 +18,29 @@ import static org.junit.Assert.assertTrue;
 @RunWith(JUnit4.class)
 public class FileStatsTest {
 
+    @Test
+    public void testNumberOfCharacters(){
+        Map<Character, Long> characterLongMap = new HashMap<>();
+        characterLongMap.put('a', (long)5);
+        characterLongMap.put('b', (long)6);
+        characterLongMap.put('c', (long)7);
+
+        double actual = characterLongMap.values().stream()
+                .mapToInt(Long::intValue)
+                .average().orElseThrow();
+
+        assertEquals(6, actual, 0.001);
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void emptyMapAverage(){
+        Map<Character, Long> characterLongMap = new HashMap<>();
+
+        double actual = characterLongMap.values().stream()
+                .mapToInt(Long::intValue)
+                .average().orElseThrow();
+
+    }
 
     @Test
     public void testCreateFileStatsFromExistingFile() {

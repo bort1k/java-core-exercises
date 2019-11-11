@@ -1,5 +1,6 @@
 package ua.procamp;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -20,12 +21,14 @@ import static java.util.stream.Collectors.groupingBy;
  */
 public class FileStats {
 
-    private final Map<Character, Long> characterLongMap;
+    private Map<Character, Long> characterLongMap;
 
     public FileStats(String fileName){
         Path path = getPath(fileName);
         characterLongMap = getAllCharacterCount(path);
     }
+
+    public FileStats(){};
 
 
     /**
@@ -76,7 +79,7 @@ public class FileStats {
     }
 
 
-    private Map<Character, Long> getAllCharacterCount(Path path) {
+    public Map<Character, Long> getAllCharacterCount(Path path) {
 
         try {
             Stream<String> lines = Files.lines(path);
@@ -96,13 +99,13 @@ public class FileStats {
                 .collect(groupingBy(identity(), counting()));
     }
 
-    private Path getPath(String fileName){
-        URL url = getClass().getClassLoader().getResource(fileName);
+    public Path getPath(String fileName){
 
         try {
+            URL url = getClass().getClassLoader().getResource(fileName);
             return Paths.get(url.toURI());
         } catch (NullPointerException | URISyntaxException e) {
-            throw new FileStatsException("Cannot open file");
+            throw new FileStatsException("Cannot open file: " + fileName);
         }
     }
 }
